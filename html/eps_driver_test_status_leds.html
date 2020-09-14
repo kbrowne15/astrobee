@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.0-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NASA Astrobee Robot Software: Test : Status LEDs</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" href="favicon.png" type="image/png" />
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -17,17 +19,18 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="freeflyer.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png"/></td>
+ <tr style="height: 70px;">
+  <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png" height="100"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NASA Astrobee Robot Software
-   &#160;<span id="projectnumber">0.11.1</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">Flight software for the Astrobee robot operating inside the International Space Station.</div>
   </td>
@@ -93,17 +96,17 @@ $(document).ready(function(){initNavTree('eps_driver_test_status_leds.html','');
 <tr class="markdownTableHead">
 <th class="markdownTableHeadRight"></th><th class="markdownTableHeadCenter"></th><th class="markdownTableHeadCenter"></th><th class="markdownTableHeadLeft"></th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">6  </td><td class="markdownTableBodyLeft">STREAM   </td></tr>
+<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">6   </td><td class="markdownTableBodyLeft">STREAM    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">7  </td><td class="markdownTableBodyLeft">CAMERA   </td></tr>
+<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">7   </td><td class="markdownTableBodyLeft">CAMERA    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">8  </td><td class="markdownTableBodyLeft">MIC   </td></tr>
+<td class="markdownTableBodyRight"></td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">8   </td><td class="markdownTableBodyLeft">MIC    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight">GREEN  </td><td class="markdownTableBodyCenter">3  </td><td class="markdownTableBodyCenter">4  </td><td class="markdownTableBodyLeft">ORANGE   </td></tr>
+<td class="markdownTableBodyRight">GREEN   </td><td class="markdownTableBodyCenter">3   </td><td class="markdownTableBodyCenter">4   </td><td class="markdownTableBodyLeft">ORANGE    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight">GREEN  </td><td class="markdownTableBodyCenter">2  </td><td class="markdownTableBodyCenter">5  </td><td class="markdownTableBodyLeft">ORANGE   </td></tr>
+<td class="markdownTableBodyRight">GREEN   </td><td class="markdownTableBodyCenter">2   </td><td class="markdownTableBodyCenter">5   </td><td class="markdownTableBodyLeft">ORANGE    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight">GREEN  </td><td class="markdownTableBodyCenter">1  </td><td class="markdownTableBodyCenter">0  </td><td class="markdownTableBodyLeft">ORANGE   </td></tr>
+<td class="markdownTableBodyRight">GREEN   </td><td class="markdownTableBodyCenter">1   </td><td class="markdownTableBodyCenter">0   </td><td class="markdownTableBodyLeft">ORANGE    </td></tr>
 </table>
 <p>The LEDs are configured by a service call to the topic <code>hw/eps/configure_led_state</code>, which is optionally prefixed by the name space for the robot on which the EPS is being run. This service call takes the form shown in ff_hw_msgs_ConfigureSystemLeds. For example, assuming the robot is running on name space <code>/</code>, to turn LED1 on, LED5 off, and leave the remaining LEDs untouched, type the following on the command line: </p><pre class="fragment">rosservice call /hw/eps/configure_led_state {status0: 0, status1: 1, \
     status2: 0, status3: 0, status4: 0, status5: 2 \
@@ -113,12 +116,7 @@ $(document).ready(function(){initNavTree('eps_driver_test_status_leds.html','');
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.0-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="subsystems.html">Subsystems</a></li><li class="navelem"><a class="el" href="hw.html">Hardware</a></li><li class="navelem"><a class="el" href="eps_driver.html">EPS Driver</a></li>
-    <li class="footer">Generated on Tue Aug 11 2020 12:56:31 for NASA Astrobee Robot Software by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
-  </ul>
-</div>
 </body>
 </html>

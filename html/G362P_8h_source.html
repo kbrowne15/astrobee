@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.0-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>NASA Astrobee Robot Software: hardware/epson_imu/include/epson_imu/G362P.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" href="favicon.png" type="image/png" />
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -17,17 +19,18 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="freeflyer.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png"/></td>
+ <tr style="height: 70px;">
+  <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png" height="100"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NASA Astrobee Robot Software
-   &#160;<span id="projectnumber">0.11.1</span>
+   &#160;<span id="projectnumber">0.12.0</span>
    </div>
    <div id="projectbrief">Flight software for the Astrobee robot operating inside the International Space Station.</div>
   </td>
@@ -109,11 +112,11 @@ $(document).ready(function(){initNavTree('G362P_8h_source.html',''); initResizab
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef EPSON_IMU_G362P_H_</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define EPSON_IMU_G362P_H_</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="G362P_8h.html#a8a6772efd4833a52e9581ed39bc17169">   22</a></span>&#160;<span class="preprocessor">#define EPSON_POWER_ON_DELAY        800000  // usec</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="G362P_8h.html#a8a6772efd4833a52e9581ed39bc17169">   22</a></span>&#160;<span class="preprocessor">#define EPSON_POWER_ON_DELAY        800000  </span><span class="comment">// usec</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="G362P_8h.html#ae95db9f6ab9f2e6fe99fd3ca5de9c558">   24</a></span>&#160;<span class="preprocessor">#define STALL_NORMAL_MODE             20  // usec</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="G362P_8h.html#a19c5cc0c5da1978e6798f1a610312045">   25</a></span>&#160;<span class="preprocessor">#define STALL_BURST_MODE_BEFORE_DATA  45  // usec</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="G362P_8h.html#a0b82f540b75f9a43af1b9b9cb89b0b89">   26</a></span>&#160;<span class="preprocessor">#define STALL_BURST_MODE_BETWEEN_DATA 5  // usec</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="G362P_8h.html#ae95db9f6ab9f2e6fe99fd3ca5de9c558">   24</a></span>&#160;<span class="preprocessor">#define STALL_NORMAL_MODE             20  </span><span class="comment">// usec</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="G362P_8h.html#a19c5cc0c5da1978e6798f1a610312045">   25</a></span>&#160;<span class="preprocessor">#define STALL_BURST_MODE_BEFORE_DATA  45  </span><span class="comment">// usec</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="G362P_8h.html#a0b82f540b75f9a43af1b9b9cb89b0b89">   26</a></span>&#160;<span class="preprocessor">#define STALL_BURST_MODE_BETWEEN_DATA 5  </span><span class="comment">// usec</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// Window 0</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="G362P_8h.html#ac5cb2ebe0091b12aa418b1a1820e57a0">   29</a></span>&#160;<span class="preprocessor">#define REG_BURST_H     0x00</span></div>
@@ -372,7 +375,7 @@ $(document).ready(function(){initNavTree('G362P_8h_source.html',''); initResizab
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}  <span class="comment">// namespace epson_imu</span></div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">#endif  // EPSON_IMU_G362P_H_</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">// EPSON_IMU_G362P_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="asignal__lights_8h_html_a37e90f5e3bd99fac2021fb3a326607d4"><div class="ttname"><a href="signal__lights_8h.html#a37e90f5e3bd99fac2021fb3a326607d4">mode</a></div><div class="ttdeci">uint8_t mode</div><div class="ttdef"><b>Definition:</b> signal_lights.h:3</div></div>
@@ -502,12 +505,7 @@ $(document).ready(function(){initNavTree('G362P_8h_source.html',''); initResizab
 <div class="ttc" id="astructepson__imu_1_1__Data_html"><div class="ttname"><a href="structepson__imu_1_1__Data.html">epson_imu::_Data</a></div><div class="ttdef"><b>Definition:</b> G362P.h:139</div></div>
 <div class="ttc" id="anamespaceepson__imu_html_a594278dd5530570b803f6c7f5407b7f2"><div class="ttname"><a href="namespaceepson__imu.html#a594278dd5530570b803f6c7f5407b7f2">epson_imu::Window</a></div><div class="ttdeci">Window</div><div class="ttdef"><b>Definition:</b> G362P.h:97</div></div>
 <div class="ttc" id="aG362P_8h_html_a6063067900925daaeb976928acca1173"><div class="ttname"><a href="G362P_8h.html#a6063067900925daaeb976928acca1173">REG_TEMP_LOW</a></div><div class="ttdeci">#define REG_TEMP_LOW</div><div class="ttdef"><b>Definition:</b> G362P.h:41</div></div>
+<!-- HTML footer for doxygen 1.9.0-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_f4316de2dfb04db90651672103de31d6.html">hardware</a></li><li class="navelem"><a class="el" href="dir_4c1392483d5884931afcee51f30d4f87.html">epson_imu</a></li><li class="navelem"><a class="el" href="dir_7832d14812be3055c0db5e6152ad1ff1.html">include</a></li><li class="navelem"><a class="el" href="dir_7d7974899a490aa927171ac51a203331.html">epson_imu</a></li><li class="navelem"><a class="el" href="G362P_8h.html">G362P.h</a></li>
-    <li class="footer">Generated on Tue Aug 11 2020 12:56:29 for NASA Astrobee Robot Software by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
-  </ul>
-</div>
 </body>
 </html>
