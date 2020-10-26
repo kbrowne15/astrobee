@@ -112,7 +112,7 @@ If on the ARC TI private network</h4>
 If not on the ARC TI private network</h4>
 <p>If you are outside the NASA ARC private network, there are two options to reach <code>astrobee.ndc.nasa.gov</code>:</p>
 <ol type="1">
-<li>Use VPN to act like if you were inside the ARC TI private network and obtain the correct kerberos credentials inside the VM with the following command (note the capitalization): <div class="fragment"><div class="line">kinit $NDC_USERNAME@NDC.NASA.GOV`</div>
+<li>Use VPN to act like if you were inside the ARC TI private network and obtain the correct kerberos credentials inside the VM with the following command (note the capitalization): <div class="fragment"><div class="line">kinit $NDC_USERNAME@NDC.NASA.GOV` </div>
 </div><!-- fragment --></li>
 <li>setup your <code>.ssh/config</code> to do ssh forwarding. A tutorial on this method is available at: <a href="https://babelfish.arc.nasa.gov/trac/freeflyer/wiki/SSHSetup">https://babelfish.arc.nasa.gov/trac/freeflyer/wiki/SSHSetup</a></li>
 </ol>
@@ -148,7 +148,7 @@ Extra options to install the dependencies</h4>
 </ul>
 <div class="fragment"><div class="line">export NDC_USERNAME=jdoe</div>
 <div class="line">export ARS_DEB_DIR=$HOME/astrobee_debs</div>
-<div class="line">./add_local_repository.sh</div>
+<div class="line">./add_local_repository.sh </div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md123"></a>
 Cross-compile setup</h3>
 <p>If you are planning to compile code to run on the robot hardware, you will need to install a cross-compile chroot and toolchain. Select two directories for these: </p><pre class="fragment">export ARMHF_CHROOT_DIR=$HOME/arm_cross/rootfs

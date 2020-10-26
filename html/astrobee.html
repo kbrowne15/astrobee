@@ -170,7 +170,7 @@ Launch file examples</h1>
 <p class="startli"><code>roslaunch astrobee astrobee.launch drivers:=true robot:=honey llp:=&lt;ip&gt;</code></p>
 </li>
 <li>Launch and introspect the <a class="el" href="namespaceepson__imu.html">epson_imu</a> remotely on some custom llp <div class="fragment"><div class="line">roslaunch astrobee astrobee.launch mlp:=disabled llp:=10.42.0.31</div>
-<div class="line">    rqt:=true nodes:=epson_imu</div>
+<div class="line">    rqt:=true nodes:=epson_imu </div>
 </div><!-- fragment --></li>
 <li><p class="startli">Launch granite table and record key data to ~/.ros:</p>
 <p class="startli"><code>roslaunch astrobee granite.launch record:=true</code></p>
@@ -178,7 +178,7 @@ Launch file examples</h1>
 <li><p class="startli">Replay the granite table data:</p>
 <p class="startli"><code>roslaunch astrobee replay bag:=~/.ros/some.bag</code></p>
 </li>
-<li>Test a single camera connected to a local machine. For this to work, the file astrobee/config/cameras.config may need to be modified, with the nav_cam device be set from /dev/nav_cam to /dev/video0. Also note that this is known not to work reliably with VirtualBox. Run: <div class="fragment"><div class="line">roslaunch astrobee granite.launch mlp:=local llp:=disabled nodes:=nav_cam,framestore</div>
+<li>Test a single camera connected to a local machine. For this to work, the file astrobee/config/cameras.config may need to be modified, with the nav_cam device be set from /dev/nav_cam to /dev/video0. Also note that this is known not to work reliably with VirtualBox. Run: <div class="fragment"><div class="line">roslaunch astrobee granite.launch mlp:=local llp:=disabled nodes:=nav_cam,framestore </div>
 </div><!-- fragment --></li>
 <li>To be able to interact with the robot in its environment using a GUI program, either via teleoperation, or by writing and running a plan, one can use the Astrobee Ground Control Station (GDS). See <a href="https://github.com/nasa/astrobee_gds">https://github.com/nasa/astrobee_gds</a> for detailed instructions for how to install and run GDS.</li>
 </ol>

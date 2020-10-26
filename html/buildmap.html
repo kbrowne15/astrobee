@@ -274,9 +274,9 @@ Stage the new map</h3>
 </div><!-- fragment --></li>
 <li>On the MLP, move the current map aside <div class="fragment"><div class="line">ssh mlp</div>
 <div class="line">cd /res/maps</div>
-<div class="line">mv granite.map _granite.map</div>
+<div class="line">mv granite.map _granite.map </div>
 </div><!-- fragment --></li>
-<li>On the MLP, create a symlink to the new map <div class="fragment"><div class="line">ln -s /data/&lt;map2test.map /res/maps/granite.map</div>
+<li>On the MLP, create a symlink to the new map <div class="fragment"><div class="line">ln -s /data/&lt;map2test.map /res/maps/granite.map </div>
 </div><!-- fragment --></li>
 </ol>
 <h3><a class="anchor" id="autotoc_md240"></a>
@@ -308,10 +308,10 @@ rosbag play --loop *.bag                               \
 Examine the performance and features on MLP</h3>
 <ol type="1">
 <li>Look at the load with htop</li>
-<li>Watch the frequency of feature production <div class="fragment"><div class="line">rostopic hz -w 5 /loc/ml/features</div>
-</div><!-- fragment --> and echo the pose being output with the features: <div class="fragment"><div class="line">rostopic echo /loc/ml/features | grep -A 17 header:</div>
+<li>Watch the frequency of feature production <div class="fragment"><div class="line">rostopic hz -w 5 /loc/ml/features </div>
+</div><!-- fragment --> and echo the pose being output with the features: <div class="fragment"><div class="line">rostopic echo /loc/ml/features | grep -A 17 header: </div>
 </div><!-- fragment --></li>
-<li>Watch the number of features being produced <div class="fragment"><div class="line">~/features_counter.py ml</div>
+<li>Watch the number of features being produced <div class="fragment"><div class="line">~/features_counter.py ml </div>
 </div><!-- fragment --></li>
 </ol>
 <h2><a class="anchor" id="autotoc_md246"></a>
