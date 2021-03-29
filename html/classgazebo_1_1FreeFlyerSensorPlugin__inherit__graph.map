@@ -1,6 +1,6 @@
 <map id="gazebo::FreeFlyerSensorPlugin" name="gazebo::FreeFlyerSensorPlugin">
 <area shape="rect" id="node1" title=" " alt="" coords="1215,924,1435,1104"/>
-<area shape="rect" id="node6" href="$classgazebo_1_1GazeboSensorPluginARTags.html" title=" " alt="" coords="5,1159,243,1354"/>
+<area shape="rect" id="node6" href="$classgazebo_1_1GazeboSensorPluginARTags.html" title=" " alt="" coords="5,1167,243,1347"/>
 <area shape="rect" id="node7" href="$classgazebo_1_1GazeboSensorPluginDockCam.html" title=" " alt="" coords="267,1174,522,1339"/>
 <area shape="rect" id="node8" href="$classgazebo_1_1GazeboSensorPluginHandrailDetect.html" title=" " alt="" coords="546,1152,782,1361"/>
 <area shape="rect" id="node9" href="$classgazebo_1_1GazeboSensorPluginHazCam.html" title=" " alt="" coords="806,1167,1053,1347"/>

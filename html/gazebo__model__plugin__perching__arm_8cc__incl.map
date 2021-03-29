@@ -1,7 +1,7 @@
 <map id="simulation/src/gazebo_model_plugin_perching_arm/gazebo_model_plugin_perching_arm.cc" name="simulation/src/gazebo_model_plugin_perching_arm/gazebo_model_plugin_perching_arm.cc">
 <area shape="rect" id="node1" title=" " alt="" coords="3477,5,3679,76"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,310,84,337"/>
-<area shape="rect" id="node3" title=" " alt="" coords="1782,131,1846,158"/>
+<area shape="rect" id="node3" href="$time_8h.html" title=" " alt="" coords="1782,131,1846,158"/>
 <area shape="rect" id="node4" href="$astrobee__gazebo_8h.html" title=" " alt="" coords="1870,124,2065,165"/>
 <area shape="rect" id="node29" title=" " alt="" coords="1463,481,1522,508"/>
 <area shape="rect" id="node51" title=" " alt="" coords="3485,131,3671,158"/>
