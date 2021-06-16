@@ -30,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png" height="100"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NASA Astrobee Robot Software
-   &#160;<span id="projectnumber">0.14.1</span>
+   &#160;<span id="projectnumber">0.14.3</span>
    </div>
    <div id="projectbrief">Flight software for the Astrobee robot operating inside the International Space Station.</div>
   </td>
@@ -619,9 +619,6 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>ClearAllFaults()
 : <a class="el" href="classff__util_1_1FreeFlyerNodelet.html#a627d95db6c693ece412888ac59c46afe">ff_util::FreeFlyerNodelet</a>
 </li>
-<li>ClearData()
-: <a class="el" href="classexecutive_1_1Executive.html#a233c95839c84189b78101865677214ad">executive::Executive</a>
-</li>
 <li>clearEvents()
 : <a class="el" href="classconfig__reader_1_1WatchFiles.html#ad212952995b77061890412f6f864f22b">config_reader::WatchFiles</a>
 </li>
@@ -696,7 +693,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classconfig__reader_1_1ConfigReader.html#a2eea95c3f6530111b31fdf9332f53957">config_reader::ConfigReader</a>
 </li>
 <li>ClosestPoseTimestamp()
-: <a class="el" href="classgraph__localizer_1_1GraphValues.html#a6c42589973c1dd98d7a13b046b7a3dbe">graph_localizer::GraphValues</a>
+: <a class="el" href="classgraph__localizer_1_1CombinedNavStateGraphValues.html#a1835828e506efb107ba912983b218449">graph_localizer::CombinedNavStateGraphValues</a>
 </li>
 <li>ClosestSpacing()
 : <a class="el" href="classgraph__localizer_1_1FeatureTrack.html#a8a6bd2e0a4c00d64398bf896c9dacc7b">graph_localizer::FeatureTrack</a>
@@ -737,7 +734,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classexecutive_1_1Executive.html#a52fc2b4e902af828066b95f28a2f5e88">executive::Executive</a>
 </li>
 <li>cmd_id()
-: <a class="el" href="classexecutive_1_1ExecutiveActionClient.html#ac5377e016b70d0a30e44511ab30a96ab">executive::ExecutiveActionClient&lt; T &gt;</a>
+: <a class="el" href="classexecutive_1_1ExecutiveActionClient.html#a1c892cd3ad08064636aa42cd17e25f8b">executive::ExecutiveActionClient&lt; T &gt;</a>
 </li>
 <li>cmd_sub_
 : <a class="el" href="classexecutive_1_1Executive.html#ae2a20bbb6d4609974e8f6ef51518772d">executive::Executive</a>
@@ -776,13 +773,22 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classmapper_1_1MapperNodelet.html#a5be54e590242ccbda549c4dd2f06a1d6">mapper::MapperNodelet</a>
 </li>
 <li>Color()
-: <a class="el" href="classvisualization__functions_1_1Color.html#a70c2a32acf4943a217b0433190fa2046">visualization_functions::Color</a>
+: <a class="el" href="classvisualization__functions_1_1Color.html#a28a37b0bb9751d7bbc1080c087fb5b9f">visualization_functions::Color</a>
+</li>
+<li>combined_nav_state_node_updater
+: <a class="el" href="structgraph__localizer_1_1GraphLocalizerParams.html#aa98c3f528ea3e5af2385e56e79821c87">graph_localizer::GraphLocalizerParams</a>
 </li>
 <li>CombinedNavState()
 : <a class="el" href="classlocalization__common_1_1CombinedNavState.html#ab1b8ecfc68dfd930a4c525c7f9822ea9">localization_common::CombinedNavState</a>
 </li>
 <li>CombinedNavStateCovariances()
 : <a class="el" href="classlocalization__common_1_1CombinedNavStateCovariances.html#afaa322e1006f26bb047b9db4cd5b6eb6">localization_common::CombinedNavStateCovariances</a>
+</li>
+<li>CombinedNavStateGraphValues()
+: <a class="el" href="classgraph__localizer_1_1CombinedNavStateGraphValues.html#ab6d12fc01f695feab471f0e206ba3a31">graph_localizer::CombinedNavStateGraphValues</a>
+</li>
+<li>CombinedNavStateNodeUpdater()
+: <a class="el" href="classgraph__localizer_1_1CombinedNavStateNodeUpdater.html#a352f4639982d028c9df08253a5e42d71">graph_localizer::CombinedNavStateNodeUpdater</a>
 </li>
 <li>Command()
 : <a class="el" href="classjsonloader_1_1Command.html#aa0b5013734e70eb175b63136a7afdc3e">jsonloader::Command</a>
@@ -959,7 +965,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classexecutive_1_1Executive.html#a0ba7ab2440db308a5c5bf5a73e9f5ce6">executive::Executive</a>
 </li>
 <li>ConfigureMobility()
-: <a class="el" href="classexecutive_1_1Executive.html#a7b6ef809e9f8aeffb7af572462794c9f">executive::Executive</a>
+: <a class="el" href="classexecutive_1_1Executive.html#af665804a5f0c9f448a1077c0870cd427">executive::Executive</a>
 </li>
 <li>ConfigureService()
 : <a class="el" href="classimage__sampler_1_1ImageSampler.html#a449620fc87d935c54283795c4a3be7f6">image_sampler::ImageSampler</a>
@@ -1018,7 +1024,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classinterest__point_1_1BriskScaleSpace.html#a803429391016188091b5c04e3190a2ce">interest_point::BriskScaleSpace</a>
 </li>
 <li>ContainsCombinedNavStateKey()
-: <a class="el" href="classgraph__localizer_1_1GraphValues.html#a36bb6143aa19196eabe83a18ebf60b03">graph_localizer::GraphValues</a>
+: <a class="el" href="classgraph__localizer_1_1CombinedNavStateGraphValues.html#af9a7e28034c73236df33658a5d5c2c89">graph_localizer::CombinedNavStateGraphValues</a>
 </li>
 <li>Control()
 : <a class="el" href="classchoreographer_1_1ChoreographerNodelet.html#a03dace7d00096a1c391ffb787aa805d4">choreographer::ChoreographerNodelet</a>
@@ -1048,14 +1054,14 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 </li>
 <li>Convert()
 : <a class="el" href="classcamera_1_1CameraParameters.html#aeda55edbdb6940f4b9c06d532ef798c7">camera::CameraParameters</a>
-, <a class="el" href="classff__util_1_1Conversion.html#a94ee996418a145389fe7c8afec937a33">ff_util::Conversion</a>
+, <a class="el" href="classff__util_1_1Conversion.html#a17de40abd3028c67b1210c7a45a04b25">ff_util::Conversion</a>
 , <a class="el" href="classgraph__bag_1_1BagImuFilterer.html#a5581497e6e5a69f5a79d09462956498d">graph_bag::BagImuFilterer</a>
 </li>
 <li>convert()
-: <a class="el" href="classTrajRosBridge.html#ad57f0ad03cd2bce16b1e0ac27c9aa021">TrajRosBridge</a>
+: <a class="el" href="classTrajRosBridge.html#abd05be043cbed61f2cc15e43e4e4c05d">TrajRosBridge</a>
 </li>
 <li>Convert()
-: <a class="el" href="classvive_1_1ViveNodelet.html#a5fbcab09baf3317e7dd0f23fbf77dcde">vive::ViveNodelet</a>
+: <a class="el" href="classvive_1_1ViveNodelet.html#a750170bb740681a1975cece902c5641d">vive::ViveNodelet</a>
 </li>
 <li>ConvertBatteryLoc()
 : <a class="el" href="classff_1_1RosBatteryStateToRapid.html#a5f7fe71f5c1d6885162fc81303c77fab">ff::RosBatteryStateToRapid</a>
@@ -1070,10 +1076,14 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classff_1_1RosPmcCmdStateToRapid.html#ac13563b042f5169ff9608f500abcc58d">ff::RosPmcCmdStateToRapid</a>
 </li>
 <li>CopyTransform3D()
-: <a class="el" href="classff_1_1RosOdomRapidPosition.html#a2cd2e7e2b67bbaacd5704e250cee612d">ff::RosOdomRapidPosition</a>
+: <a class="el" href="classff_1_1RapidEkfToRos.html#aab8db222b4435631f38b78f1151b57de">ff::RapidEkfToRos</a>
+, <a class="el" href="classff_1_1RosEkfToRapid.html#a07472321912b1929daf81a8b21d88f22">ff::RosEkfToRapid</a>
+, <a class="el" href="classff_1_1RosOdomRapidPosition.html#a2cd2e7e2b67bbaacd5704e250cee612d">ff::RosOdomRapidPosition</a>
 </li>
 <li>CopyVec3D()
-: <a class="el" href="classff_1_1RosGncControlStateToRapid.html#aa23a0bbe76102ab37aed340f7681f253">ff::RosGncControlStateToRapid</a>
+: <a class="el" href="classff_1_1RapidEkfToRos.html#a695e67ee0e5360f806a607d4532fa074">ff::RapidEkfToRos</a>
+, <a class="el" href="classff_1_1RosEkfToRapid.html#a730dc70d4f565e501637a25f924ea81b">ff::RosEkfToRapid</a>
+, <a class="el" href="classff_1_1RosGncControlStateToRapid.html#aa23a0bbe76102ab37aed340f7681f253">ff::RosGncControlStateToRapid</a>
 , <a class="el" href="classff_1_1RosGncFamCmdStateToRapid.html#a3e6b9166b1ef417107ef32d692bfef81">ff::RosGncFamCmdStateToRapid</a>
 , <a class="el" href="classff_1_1RosOdomRapidPosition.html#a75982b6b76288b5ae081f24c51b40a7f">ff::RosOdomRapidPosition</a>
 </li>
@@ -1108,7 +1118,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 , <a class="el" href="classff__util_1_1FreeFlyerServiceClient.html#a82a241921bb59e0b9c05ecdfb7a2cfb6">ff_util::FreeFlyerServiceClient&lt; ServiceSpec &gt;</a>
 </li>
 <li>create()
-: <a class="el" href="classinterest__point_1_1BRISK.html#a0925bf53e402bacf7009a2b923fd21aa">interest_point::BRISK</a>
+: <a class="el" href="classinterest__point_1_1BRISK.html#a0283989bf6c03446101dea4cfb4960a6">interest_point::BRISK</a>
 </li>
 <li>Create()
 : <a class="el" href="structsparse__mapping_1_1ReprojectionError.html#ad622e49acb1f98758a1b320248682b40">sparse_mapping::ReprojectionError</a>
@@ -1122,7 +1132,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classrviz_1_1SliderProperty.html#ac59fe04fb618a5ebb14132bc6754dabd">rviz::SliderProperty</a>
 </li>
 <li>CreateFeatureKey()
-: <a class="el" href="classgraph__localizer_1_1GraphValues.html#a380bc7ede70a4e0d4071eb79177c25c6">graph_localizer::GraphValues</a>
+: <a class="el" href="classgraph__localizer_1_1FeaturePointGraphValues.html#a36f3d1581ffe414ff3333e27646a9205">graph_localizer::FeaturePointGraphValues</a>
 </li>
 <li>CreateKdTree()
 : <a class="el" href="classsampled__traj_1_1SampledTrajectory3D.html#acbb7e9361cbe25709cf5b349b1495cd1">sampled_traj::SampledTrajectory3D</a>
@@ -1156,7 +1166,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 : <a class="el" href="classctl_1_1CtlNodelet.html#aa381b2212d412ca1a350ae3c5ea1a431">ctl::CtlNodelet</a>
 </li>
 <li>CumulativeFactorAdder()
-: <a class="el" href="classgraph__localizer_1_1CumulativeFactorAdder.html#a0bed60856d35b635cd384ba4fd45fab0">graph_localizer::CumulativeFactorAdder&lt; PARAMS &gt;</a>
+: <a class="el" href="classgraph__optimizer_1_1CumulativeFactorAdder.html#aa617b9732e255a5d583ff9eda43c1e2e">graph_optimizer::CumulativeFactorAdder&lt; PARAMS &gt;</a>
 </li>
 <li>cur_frame
 : <a class="el" href="structMapViewerState.html#a507e3a04b9ea51b09e94c0e6ed507f31">MapViewerState</a>

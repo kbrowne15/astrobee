@@ -30,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="astrobee-logo.png" height="100"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NASA Astrobee Robot Software
-   &#160;<span id="projectnumber">0.14.1</span>
+   &#160;<span id="projectnumber">0.14.3</span>
    </div>
    <div id="projectbrief">Flight software for the Astrobee robot operating inside the International Space Station.</div>
   </td>
@@ -91,16 +91,16 @@ $(document).ready(function(){initNavTree('teleop.html',''); initResizable(); });
 <div class="title">Teleoperation Tool Instructions </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>These instructions assume that you have followed the <a class="el" href="md_INSTALL.html">install instructions</a> and the <a class="el" href="sim__overview_8md.html">simulation instructions</a>.</p>
-<p>A teleop tool has been added to allow you to issue some commands and get some telemetry from the robot. This should only be used to play with the simulator and get a feel for how Astrobee works. As an external user, we consider you to be a guest sciencist and we expect you to follow the guest science framework we have created. Please see the Guest Science Applications section in the <a href="../../simulation/sim_overview.md#guest-science-applications">simulation_instructions</a> for more information.</p>
-<p>To use the teleop tool, the user must specify what they want to do through flags. This section will take you through the flags the tool offers. Please note, you can only specify one mobility flag at a time. For example, you will not be able to use both the dock flag and the move flag. Also you don't need to use a mobility flag. You can run the teleop tool just to get telemetry. Please make sure the terminal you are using for the tool has its environment setup. For information on how to setup the terminal environment, please see the Setting up your Environment section of the <a href="../../simulation/sim_overview.md#setting-up-your-environment">simulator readme</a>.</p>
-<h2><a class="anchor" id="autotoc_md362"></a>
+<div class="textblock"><p>These instructions assume that you have followed <a class="el" href="install-nonNASA.html">Install for general users</a> or <a class="el" href="install-NASA.html">Install for NASA users</a> and <a class="el" href="running-the-sim.html">Running the Astrobee Simulator</a>.</p>
+<p>A teleop tool has been added to allow you to issue some commands and get some telemetry from the robot. This should only be used to play with the simulator and get a feel for how Astrobee works. As an external user, we consider you to be a guest sciencist and we expect you to follow the guest science framework we have created. Please see the Guest Science Applications section in the <a class="el" href="running-the-sim.html">Running the Astrobee Simulator</a> documentation for more information.</p>
+<p>To use the teleop tool, the user must specify what they want to do through flags. This section will take you through the flags the tool offers. Please note, you can only specify one mobility flag at a time. For example, you will not be able to use both the dock flag and the move flag. Also you don't need to use a mobility flag. You can run the teleop tool just to get telemetry. Please make sure the terminal you are using for the tool has its environment setup. For information on how to setup the terminal environment, please see the Setting up your Environment section of the <a class="el" href="running-the-sim.html">Running the Astrobee Simulator</a> documentation.</p>
+<h2><a class="anchor" id="autotoc_md363"></a>
 Basic Usage</h2>
-<h3><a class="anchor" id="autotoc_md363"></a>
+<h3><a class="anchor" id="autotoc_md364"></a>
 Dock</h3>
 <p>This flag can be used to dock the robot and is considered a mobility flag. To dock, please run the following: </p><pre class="fragment">rosrun executive teleop_tool -dock
 </pre><p>By default, the robot will dock in berth 1 (the left berth). If you would like it to dock in the right berth, you will have to use the berth flag. To dock Astrobee in the right berth, please run the following: </p><pre class="fragment">rosrun executive teleop_tool -dock -berth 2
-</pre><h3><a class="anchor" id="autotoc_md364"></a>
+</pre><h3><a class="anchor" id="autotoc_md365"></a>
 Move</h3>
 <p>This flag can be used to move the robot and is be considered a mobility flag. If you want to move relative to the robot, please use the relative flag. If you want to specify an absolute position, do not specify the relative flag. You should use the pos flag to specify the desired position in cartesian format (X Y Z). You should use the att flag to specify the desired attitude in angle-axis format. You don't need to specify the position if you only want to rotate the robot and you don't need to specify the attitude if you only want to move Astrobee. Please see the following examples for clarity (these examples assume you are using the ISS world):</p>
 <p>To move the robot forward 1, right 2 and down 0.5: </p><pre class="fragment">rosrun executive teleop_tool -move -relative -pos "1 2 0.5"
@@ -108,33 +108,30 @@ Move</h3>
 </pre><p>To rotate the robot around Y (axis X=0 Y=1 Z=0) by -1.5 radians: </p><pre class="fragment">rosrun executive teleop_tool -move -att "-1.5 0 1 0"
 </pre><p>To move to the middle of the JEM: </p><pre class="fragment">rosrun executive teleop_tool -move -pos "11.25 -6.59"
 </pre><p>To move to the dock approach point facing the dock: </p><pre class="fragment">rosrun executive teleop_tool -move -pos "10.34 -9.51 4.49" -att "-3.14 0 0 1"
-</pre><h3><a class="anchor" id="autotoc_md365"></a>
-Stop</h3>
-<p>This flag can be used to stop the robot and is considered a mobility flag. If you are using the teleop tool to move the robot and it isn't running in the background, you will have to run the teleop tool with the stop flag in another terminal whose environment is setup. For information on how to setup the terminal, please see the Setting up your Environment section of the <a href="../../simulation/sim_overview.md#setting-up-your-environment">simulator readme</a>. To stop, run: </p><pre class="fragment">rosrun executive teleop_tool -stop
 </pre><h3><a class="anchor" id="autotoc_md366"></a>
+Stop</h3>
+<p>This flag can be used to stop the robot and is considered a mobility flag. If you are using the teleop tool to move the robot and it isn't running in the background, you will have to run the teleop tool with the stop flag in another terminal whose environment is setup. For information on how to setup the terminal, please see the Setting up your Environment section of the <a class="el" href="running-the-sim.html">Running the Astrobee Simulator</a> documentation. To stop, run: </p><pre class="fragment">rosrun executive teleop_tool -stop
+</pre><h3><a class="anchor" id="autotoc_md367"></a>
 Undock</h3>
 <p>This flag can be used to undock the robot and is considered a mobility flag. To undock, please run the following: </p><pre class="fragment">rosrun executive teleop_tool -undock
-</pre><h3><a class="anchor" id="autotoc_md367"></a>
+</pre><h3><a class="anchor" id="autotoc_md368"></a>
 Get Position</h3>
 <p>This flag is used to get the robot's current position. To use it, run: </p><pre class="fragment">rosrun executive teleop_tool -get_pose
-</pre><h3><a class="anchor" id="autotoc_md368"></a>
+</pre><h3><a class="anchor" id="autotoc_md369"></a>
 Get State</h3>
 <p>This flag is used to get the robot's state. This will display the robot's operating and mobility states. If you try to issue a command that is rejected because the robot is not in the right state, you may want to use this flag to figure out what the robot is doing. To use it, run: </p><pre class="fragment">rosrun executive teleop_tool -get_state
-</pre><h3><a class="anchor" id="autotoc_md369"></a>
+</pre><h3><a class="anchor" id="autotoc_md370"></a>
 Reset Ekf</h3>
 <p>This flag is used to reset the localization. If your Astrobee is spinning or jumping around erraticaly, you should try to reset the ekf. To do this, run: </p><pre class="fragment">rosrun executive teleop_tool -reset_ekf
-</pre><h2><a class="anchor" id="autotoc_md370"></a>
+</pre><h2><a class="anchor" id="autotoc_md371"></a>
 Advanced Usage</h2>
-<h3><a class="anchor" id="autotoc_md371"></a>
+<h3><a class="anchor" id="autotoc_md372"></a>
 Namespace</h3>
 <p>If you used a namespace when launching the robot, you must use a namespace for the teleop tool. If you don't, the program will report that there are no publishers for the ack topic and the program will then exit. For example, to undock the Astrobee named bumble, you would issue the following: </p><pre class="fragment">rosrun executive teleop_tool -ns "bumble" -undock
 </pre><p><b>Important</b>: Much like the launch namespace, please DO NOT capitalize the namespace as we don't support this.</p>
-<h3><a class="anchor" id="autotoc_md372"></a>
+<h3><a class="anchor" id="autotoc_md373"></a>
 Reset Bias</h3>
-<p>This flag is used to reset the bias. We encode gravity in our bias so if you launch the simulator with a world different than the previous world, you will have to reset the bias. To do this, run: </p><pre class="fragment">rosrun executive teleop_tool -reset_bias
-</pre><h3><a class="anchor" id="autotoc_md373"></a>
-Reset Bias</h3>
-<p>This flag is used to reset the bias. We encode gravity in our bias so if you launch the simulator with a world different than the previous world, you will have to reset the bias. To do this, run: </p><pre class="fragment">rosrun executive teleop_tool -reset_bias
+<p>This flag is used to reset the bias. To do this, run: </p><pre class="fragment">rosrun executive teleop_tool -reset_bias
 </pre><h3><a class="anchor" id="autotoc_md374"></a>
 Get Faults</h3>
 <p>This flag is used to display the current faults in the system. If you received a heartbeat fault, you may want to check the faults to see if the heartbeat came back (i.e. the heartbeat fault disappeared). To use this flag, run: </p><pre class="fragment">rosrun executive teleop_tool -get_faults
