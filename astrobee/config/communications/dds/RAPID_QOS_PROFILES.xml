@@ -573,24 +573,7 @@
     <!-- ================================================================================== -->
 
     <!-- ASTROBEE Extension: AgentState ================================== -->
-    <qos_profile name="AstrobeeAgentStateProfile" base_name="RapidStateQos">
-      <datareader_qos>
-        <liveliness>
-          <lease_duration>
-            <sec>10</sec>
-            <nanosec>0</nanosec>
-          </lease_duration>
-        </liveliness>
-      </datareader_qos>
-      <datawriter_qos>
-        <liveliness>
-          <lease_duration>
-            <sec>10</sec>
-            <nanosec>0</nanosec>
-          </lease_duration>
-        </liveliness>
-      </datawriter_qos>
-    </qos_profile>
+    <qos_profile name="AstrobeeAgentStateProfile" base_name="RapidStateQos" />
 
     <!-- ASTROBEE Extension: ArmState ================================== -->
     <qos_profile name="AstrobeeArmStateProfile" base_name="RapidStateQos" />
