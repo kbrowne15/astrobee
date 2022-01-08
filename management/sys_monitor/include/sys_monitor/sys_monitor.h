@@ -74,7 +74,7 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
              std::string const& node_name,
              ros::Duration const& timeout,
              uint const allowed_misses,
-               uint const fault_id);
+             uint const fault_id);
     uint fault_id();
     uint misses_allowed();
     ff_msgs::HeartbeatConstPtr previous_hb();
@@ -84,22 +84,25 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
     std::string nodelet_manager();
     std::string nodelet_name();
     std::string nodelet_type();
+    void fault_id(uint fault_id);
     void hb_fault_occurring(bool occurring);
+    void misses_allowed(uint allowed_misses);
     void nodelet_manager(std::string manager_name);
     void nodelet_name(std::string name);
     void nodelet_type(std::string type);
-    void unloaded(bool is_unloaded);
-    void ResetTimer();
-    void StopTimer();
     void previous_hb(ff_msgs::HeartbeatConstPtr hb);
+    void ResetTimer();
+    void ResetTimerTimeout(ros::Duration const& timout);
+    void StopTimer();
     void TimerCallBack(ros::TimerEvent const& te);
+    void unloaded(bool is_unloaded);
 
    private:
     ros::Timer timer_;
     SysMonitor *const monitor_;
     uint missed_count_;
-    uint const misses_allowed_;
-    uint const fault_id_;
+    uint misses_allowed_;
+    uint fault_id_;
     bool hb_fault_occurring_;
     bool heartbeat_started_;
     bool unloaded_;
@@ -115,21 +118,27 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
           bool const blocking_in,
           bool const warning_in,
           ff_msgs::CommandStampedPtr response_in);
-    std::string const node_name;
-    bool const blocking;
-    bool const warning;
+    std::string node_name;
+    bool blocking;
+    bool warning;
     ff_msgs::CommandStampedPtr response;
   };
 
   /**
-   * Add a watchdog for node_name if one does not exist
+   * Add a watchdog for node_name if one does not exist. If one does exist,
+   * replace the fault information with the new information.
    * @param node_name       unique node name, use ros::this_node::getName()
    * @param timeout         watchdog timer timeout
    * @param allowed_misses  allowable missed watchdog timeouts
    * @param fault_id        unique fault id
+   * @param old fault id    Actually a return value used for heartbeats that
+   *                        have already been added to the watchdog map.
    */
-  void AddWatchDog(ros::Duration const& timeout, std::string const& node_name,
-                   uint const allowed_misses, uint const fault_id);
+  bool AddWatchDog(ros::Duration const& timeout,
+                   std::string const& node_name,
+                   uint const allowed_misses,
+                   uint const fault_id,
+                   uint &old_fault_id);
 
   void SetFaultState(unsigned int fault_id, bool adding_fault);
 
@@ -166,6 +175,7 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
   void StartupTimerCallback(ros::TimerEvent const& te);
 
   void ReloadNodeletTimerCallback(ros::TimerEvent const& te);
+
   /**
    * Read params will read in all the parameters from the lua config files.
    * When reloading parameters with this function, the watch dog will be cleared
@@ -204,7 +214,6 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
   std::map<unsigned int, std::shared_ptr<Fault>> all_faults_;
   std::map<std::string, WatchdogPtr> watch_dogs_;
 
-  // TODO(Katie) possibly remove this
   std::vector<std::string> unwatched_heartbeats_;
   std::vector<std::string> reloaded_nodelets_;
 

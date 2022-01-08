@@ -108,10 +108,11 @@ void SysMonitor::RemoveFault(unsigned int fault_id) {
   PublishFaultState();
 }
 
-void SysMonitor::AddWatchDog(ros::Duration const& timeout,
+bool SysMonitor::AddWatchDog(ros::Duration const& timeout,
                              std::string const& node_name,
                              uint const allowed_misses,
-                             uint const fault_id) {
+                             uint const fault_id,
+                             uint &old_fault_id) {
   if (!watch_dogs_.count(node_name)) {
     SysMonitor::WatchdogPtr watchDog(new SysMonitor::Watchdog(this,
                                                               node_name,
@@ -119,10 +120,22 @@ void SysMonitor::AddWatchDog(ros::Duration const& timeout,
                                                               allowed_misses,
                                                               fault_id));
     watch_dogs_.emplace(node_name, watchDog);
-  } else {
-    NODELET_INFO("AddWatchDog() already exists for %s",
-                                                          node_name.c_str());
+    return true;
   }
+
+  // This will only happen if a guest scientist adds a heartbeat for a node
+  // that already existed. Since guest scientists do rewrite some of the core
+  // nodes, let there heartbeat fault entry overwrite the fault information
+  NODELET_INFO("Watch dog already exists for %s. Replacing the fault info",
+                node_name.c_str());
+  // Get the old heartbeat fault so we can remove it from the master fault table
+  old_fault_id = watch_dogs_[node_name]->fault_id();
+
+  watch_dogs_[node_name]->misses_allowed(allowed_misses);
+  watch_dogs_[node_name]->fault_id(fault_id);
+  watch_dogs_[node_name]->ResetTimerTimeout(timeout);
+
+  return false;
 }
 
 void SysMonitor::SetFaultState(unsigned int fault_id, bool adding_fault) {
@@ -709,11 +722,11 @@ bool SysMonitor::ReadParams() {
 
   config_reader::ConfigReader::Table subsystems_tbl(&config_params_,
                                                                   "subsystems");
-  unsigned int fault_id, misses;
+  unsigned int fault_id, misses, old_fault_id;
   double timeout;
-  int i, j, k, nodes_tbl_size, faults_tbl_size;
+  int i, j, k, l, nodes_tbl_size, faults_tbl_size, subsys_index, node_index;
   std::string subsys_name, node_name, fault_description;
-  bool blocking, warning, found;
+  bool blocking, warning, found, heartbeat_fault, not_replaced;
 
   // Go through all the subsystems
   int subsystems_tbl_size = subsystems_tbl.GetSize() + 1;
@@ -726,8 +739,22 @@ bool SysMonitor::ReadParams() {
       return false;
     }
 
+    // Make sure the subsystem isn't already in the list. This can occur if a
+    // guest scientist adds faults under a common astrobee subsystem
+    found = false;
+    for (j = 0; j < fault_config_.subsystems.size(); j++) {
+      if (subsys_name == fault_config_.subsystems[j]) {
+        found = true;
+        break;
+      }
+    }
+
+    subsys_index = j;
+
     // Add subsystem name to the config list of subsystem names
-    fault_config_.subsystems.emplace_back(subsys_name);
+    if (!found) {
+      fault_config_.subsystems.emplace_back(subsys_name);
+    }
 
     // Check nodes table exists
     if (!subsystem_tbl.CheckValExists("nodes")) {
@@ -750,9 +777,10 @@ bool SysMonitor::ReadParams() {
         return false;
       }
 
+      // Make sure node is not in the list of nodes not running
       found = false;
-      for (unsigned int m = 0; m < nodes_not_running.size(); m++) {
-        if (node_name == nodes_not_running[m]) {
+      for (l = 0; l < nodes_not_running.size(); l++) {
+        if (node_name == nodes_not_running[l]) {
           found = true;
           break;
         }
@@ -762,8 +790,23 @@ bool SysMonitor::ReadParams() {
         continue;
       }
 
+      // Make sure there we don't add the node name twice if there are two table
+      // entries for one node. This can occur if a guest scientist overloads a
+      // core node and adds more faults for it
+      found = false;
+      for (k = 0; k < fault_config_.nodes.size(); k++) {
+        if (node_name == fault_config_.nodes[k]) {
+          found = true;
+          break;
+        }
+      }
+
+      node_index = k;
+
       // Add node name to the config list of node names
-      fault_config_.nodes.emplace_back(node_name);
+      if (!found) {
+        fault_config_.nodes.emplace_back(node_name);
+      }
 
       // Check faults table exists
       if (!node_tbl.CheckValExists("faults")) {
@@ -789,32 +832,28 @@ bool SysMonitor::ReadParams() {
             ReadCommand(&fault_entry, response_cmd)) {
           ff_msgs::FaultInfo fault_info;
 
-          // subsystem was added to vector at back which corresponds to i - 1
-          fault_info.subsystem = i - 1;
-          // node was added to vector at back which corresponds to size - 1
-          fault_info.node = fault_config_.nodes.size() - 1;
+          // subsystem index was calculated when we added or found the subsystem
+          // in the list of subsystems
+          fault_info.subsystem = subsys_index;
+          fault_info.node = node_index;
           fault_info.id = fault_id;
           fault_info.warning = warning;
           fault_info.description.assign(fault_description, 0, 64);
 
-          // Add fault info to fault config message so it can be sent to ground
-          fault_config_.faults.push_back(fault_info);
-
-          auto fault = std::make_shared<SysMonitor::Fault>(node_name,
-                                                           blocking,
-                                                           warning,
-                                                           response_cmd);
-
-          all_faults_.emplace(fault_id, fault);
-
           // Check if fault is a heartbeat fault and read in the heartbeat info
           // if it is
+          heartbeat_fault = false;
           if (fault_entry.CheckValExists("heartbeat")) {
             config_reader::ConfigReader::Table heartbeat(&fault_entry,
                                                                   "heartbeat");
             if (heartbeat.GetReal("timeout_sec", &timeout) &&
                 heartbeat.GetUInt("misses", &misses)) {
-              AddWatchDog(ros::Duration(timeout), node_name, misses, fault_id);
+              heartbeat_fault = true;
+              not_replaced = AddWatchDog(ros::Duration(timeout),
+                                         node_name,
+                                         misses,
+                                         fault_id,
+                                         old_fault_id);
             } else {
               NODELET_ERROR("Unable to add heartbeat for node %s.",
                                                             node_name.c_str());
@@ -822,6 +861,65 @@ bool SysMonitor::ReadParams() {
               return false;
             }
           }
+
+          // It is okay for a guest scientist to "overwrite" a fault. This is
+          // because they are able to rewrite core nodes and they might need a
+          // different fault response for an astrobee fault. However, we cannot
+          // guarantee that a guest scientist looks up the fault id for an
+          // existing fault so they may create the same fault with a different
+          // fault id. This will be caught for heartbeat faults and the original
+          // heartbeat fault will be replaced with the new fault. However, for
+          // other faults, they will remain in the fault table. I'm okay with
+          // this since faults are triggered by their fault ids so only the
+          // newer faults will be triggered.
+          // Check if the fault already existed
+          if (all_faults_.count(fault_id)) {
+            // If the fault id already exists, replace info
+            // Have to find fault in config
+            for (l = 0; l < fault_config_.faults.size(); l++) {
+              if (fault_id == fault_config_.faults[l].id) {
+                fault_config_.faults[l].subsystem = subsys_index;
+                fault_config_.faults[l].node = node_index;
+                fault_config_.faults[l].warning = warning;
+                fault_config_.faults[l].description.assign(fault_description,
+                                                           0,
+                                                           64);
+                break;
+              }
+            }
+
+            // Replace fault info in the all faults map
+            all_faults_[fault_id]->node_name = node_name;
+            all_faults_[fault_id]->blocking = blocking;
+            all_faults_[fault_id]->response = response_cmd;
+          } else {
+            // Check if heartbeat fault was replaced. If it was and the
+            // fault id was the same, the replace happened in the if. This is
+            // the case where the fault id is different so let's remove the
+            // original heartbeat fault and add the new one.
+            if (heartbeat_fault && !not_replaced) {
+              // Remove from config
+              for (l = 0; l < fault_config_.faults.size(); l++) {
+                if (old_fault_id == fault_config_.faults[l].id) {
+                  fault_config_.faults.erase(fault_config_.faults.begin() + l);
+                  break;
+                }
+              }
+
+              // Remove from all faults table
+              all_faults_.erase(old_fault_id);
+            }
+
+            fault_config_.faults.push_back(fault_info);
+
+            auto fault = std::make_shared<SysMonitor::Fault>(node_name,
+                                                             blocking,
+                                                             warning,
+                                                             response_cmd);
+
+            all_faults_.emplace(fault_id, fault);
+          }
+
         } else {
           NODELET_ERROR("Unable to read fault at %i in %s's table.",
                                                           k, node_name.c_str());
@@ -1177,8 +1275,16 @@ std::string SysMonitor::Watchdog::nodelet_type() {
   return nodelet_type_;
 }
 
+void SysMonitor::Watchdog::fault_id(uint fault_id) {
+  fault_id_ = fault_id;
+}
+
 void SysMonitor::Watchdog::hb_fault_occurring(bool occurring) {
   hb_fault_occurring_ = occurring;
+}
+
+void SysMonitor::Watchdog::misses_allowed(uint allowed_misses) {
+  misses_allowed_ = allowed_misses;
 }
 
 void SysMonitor::Watchdog::nodelet_manager(std::string manager_name) {
@@ -1205,6 +1311,10 @@ void SysMonitor::Watchdog::ResetTimer() {
   timer_.stop();
   timer_.start();
   missed_count_ = 0;
+}
+
+void SysMonitor::Watchdog::ResetTimerTimeout(ros::Duration const& timeout) {
+  timer_.setPeriod(timeout);
 }
 
 void SysMonitor::Watchdog::StopTimer() {
