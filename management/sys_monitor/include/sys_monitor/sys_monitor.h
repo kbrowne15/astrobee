@@ -148,12 +148,6 @@ class SysMonitor : public ff_util::FreeFlyerNodelet {
    */
   void HeartbeatCallback(ff_msgs::HeartbeatConstPtr const& heartbeat);
 
-  void AssertFault(ff_util::FaultKeys enum_key,
-                   std::string const& message,
-                   ros::Time time_fault_occurred = ros::Time::now());
-
-  void ClearFault(ff_util::FaultKeys enum_key);
-
   virtual void Initialize(ros::NodeHandle *nh);
 
   void OutputFaultTables();
