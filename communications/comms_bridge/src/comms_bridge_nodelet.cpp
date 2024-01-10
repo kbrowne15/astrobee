@@ -37,6 +37,7 @@
 #include <vector>
 
 #include "comms_bridge/generic_rapid_msg_ros_pub.h"
+#include "comms_bridge/generic_rapid_pub.h"
 #include "comms_bridge/generic_rapid_sub.h"
 #include "comms_bridge/generic_ros_sub_rapid_pub.h"
 
@@ -65,7 +66,8 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
  public:
   CommsBridgeNodelet() : ff_util::FreeFlyerNodelet("comms_bridge"),
                          dds_initialized_(false),
-                         initialize_dds_on_start_(false) {}
+                         initialize_dds_on_start_(false),
+                         enable_advertisement_info_request_(false) {}
 
   virtual ~CommsBridgeNodelet() {}
 
@@ -107,6 +109,8 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
       }
     }
     ROS_INFO_STREAM("Comms Bridge Nodelet: agent name " << agent_name_);
+
+    ros_sub_ = std::make_shared<ff::GenericROSSubRapidPub>();
 
     int fake_argc = 1;
 
@@ -217,9 +221,19 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
     std::string connection, dds_topic_name;
     ff::AdvertisementInfoRapidSubPtr advertisement_info_sub;
     ff::ContentRapidSubPtr content_sub;
-    ros_sub_.InitializeDDS(rapid_connections_);
+    ff::RequestRapidSubPtr request_sub;
+    robot_rapid_pubs_ =
+            std::make_shared<std::map<std::string, ff::GenericRapidPubPtr>>();
     for (size_t i = 0; i < rapid_connections_.size(); i++) {
-      // Lower case the external agent name to use it like a namespace
+      ff::GenericRapidPubPtr rapid_pub =
+                  std::make_shared<ff::GenericRapidPub>(rapid_connections_[i]);
+      robot_rapid_pubs_->emplace(rapid_connections_[i], rapid_pub);
+    }
+
+    ros_sub_->InitializeDDS(robot_rapid_pubs_.get());
+    ros_pub_->InitializeDDS(robot_rapid_pubs_.get(),
+                            enable_advertisement_info_request_);
+    for (size_t i = 0; i < rapid_connections_.size(); i++) {
       connection = rapid_connections_[i];
       dds_topic_name = agent_name_ + "-" +
           rapid::ext::astrobee::GENERIC_COMMS_ADVERTISEMENT_INFO_TOPIC;
@@ -230,7 +244,8 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
           "AstrobeeGenericCommsAdvertisementInfoProfile",
           dds_topic_name,
           connection,
-          ros_pub_.get());
+          ros_pub_.get(),
+          ros_sub_.get());
       advertisement_info_rapid_subs_.push_back(advertisement_info_sub);
 
       dds_topic_name = agent_name_ + "-" +
@@ -241,10 +256,25 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
           "AstrobeeGenericCommsContentProfile",
           dds_topic_name,
           connection,
-          ros_pub_.get());
+          ros_pub_.get(),
+          ros_sub_.get());
       content_rapid_subs_.push_back(content_sub);
+
+      if (enable_advertisement_info_request_) {
+        dds_topic_name = agent_name_ + "-" +
+                         rapid::ext::astrobee::GENERIC_COMMS_REQUEST_TOPIC;
+        ROS_DEBUG("Comms Bridge: DDS Sub DDS request topic name: %s\n",
+                  dds_topic_name.c_str());
+        request_sub = std::make_shared<ff::GenericRapidSub<rapid::ext::astrobee::GenericCommsRequest>>(
+            "AstrobeeGenericCommsRequestProfile",
+            dds_topic_name,
+            connection,
+            ros_pub_.get(),
+            ros_sub_.get());
+        request_rapid_subs_.push_back(request_sub);
+      }
     }
-    ros_sub_.AddTopics(link_entries_);
+    ros_sub_->AddTopics(link_entries_);
     dds_initialized_ = true;
   }
 
@@ -261,13 +291,19 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
     if (!config_params_.GetUInt("verbose", &verbose)) {
       NODELET_ERROR("Comms Bridge Nodelet: Could not read verbosity level. Setting to 2 (info?).");
     }
-    ros_sub_.setVerbosity(verbose);
+    ros_sub_->setVerbosity(verbose);
     ros_pub_->setVerbosity(verbose);
 
     initialize_dds_on_start_ = false;
     if (!config_params_.GetBool("initialize_dds_on_start",
                                 &initialize_dds_on_start_)) {
       NODELET_ERROR("Comms Bridge Nodelet: Could not read initialize dds on start. Setting to false.");
+    }
+
+    enable_advertisement_info_request_ = false;
+    if (!config_params_.GetBool("enable_advertisement_info_request",
+                                &enable_advertisement_info_request_)) {
+      NODELET_ERROR("Comms Bridge Nodelet: Could not read enable advertisement info request. Setting to false.");
     }
 
     // Load shared topic groups
@@ -353,14 +389,20 @@ class CommsBridgeNodelet : public ff_util::FreeFlyerNodelet {
 
  private:
   bool initialize_dds_on_start_, dds_initialized_;
+  bool enable_advertisement_info_request_;
   config_reader::ConfigReader config_params_;
-  ff::GenericROSSubRapidPub ros_sub_;
+
   std::vector<ff::ContentRapidSubPtr> content_rapid_subs_;
   std::vector<ff::AdvertisementInfoRapidSubPtr> advertisement_info_rapid_subs_;
+  std::vector<ff::RequestRapidSubPtr> request_rapid_subs_;
+  std::vector<std::string> rapid_connections_;
+
   std::shared_ptr<kn::DdsEntitiesFactorySvc> dds_entities_factory_;
   std::shared_ptr<ff::GenericRapidMsgRosPub> ros_pub_;
+  std::shared_ptr<ff::GenericROSSubRapidPub> ros_sub_;
+  std::shared_ptr<std::map<std::string, ff::GenericRapidPubPtr>> robot_rapid_pubs_;
+
   std::string agent_name_, participant_name_;
-  std::vector<std::string> rapid_connections_;
   std::map<std::string, std::vector<std::pair<std::string, std::string>>> link_entries_;
   ros::ServiceServer dds_initialize_srv_;
 };

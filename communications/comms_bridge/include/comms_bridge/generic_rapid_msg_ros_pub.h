@@ -20,6 +20,7 @@
 #define COMMS_BRIDGE_GENERIC_RAPID_MSG_ROS_PUB_H_
 
 #include <comms_bridge/bridge_publisher.h>
+#include <comms_bridge/generic_rapid_pub.h>
 #include <comms_bridge/util.h>
 
 #include <string>
@@ -38,10 +39,19 @@ class GenericRapidMsgRosPub : public BridgePublisher {
   explicit GenericRapidMsgRosPub(double ad2pub_delay = DEFAULT_ADVERTISE_TO_PUB_DELAY);
   virtual ~GenericRapidMsgRosPub();
 
-  void ConvertData(rapid::ext::astrobee::GenericCommsAdvertisementInfo const* data);
-  void ConvertData(rapid::ext::astrobee::GenericCommsContent const* data);
-};
+  void InitializeDDS(std::map<std::string, GenericRapidPubPtr>* robot_pubs,
+                     bool enable_advertisement_info_request);
+  void HandleAdvertisementInfo(rapid::ext::astrobee::GenericCommsAdvertisementInfo const* data);
+  void HandleContent(rapid::ext::astrobee::GenericCommsContent const* data,
+                     std::string const& connecting_robot);
+  void RequestAdvertisementInfo(std::string const& output_topic,
+                                std::string const& connecting_robot);
 
+ private:
+  bool dds_initialized_, enable_advertisement_info_request_;
+
+  std::map<std::string, GenericRapidPubPtr>* robot_rapid_pubs_;
+};
 }  // end namespace ff
 
 #endif  // COMMS_BRIDGE_GENERIC_RAPID_MSG_ROS_PUB_H_

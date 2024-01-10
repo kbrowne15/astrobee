@@ -31,6 +31,7 @@
 #include "dds_msgs/AstrobeeConstantsSupport.h"
 #include "dds_msgs/GenericCommsAdvertisementInfoSupport.h"
 #include "dds_msgs/GenericCommsContentSupport.h"
+#include "dds_msgs/GenericCommsRequestSupport.h"
 
 namespace ff {
 
@@ -46,17 +47,19 @@ class GenericRapidPub {
                   std::string const& data_name,
                   std::string const& topic);
 
-  void ProcessAdvertisementInfo(std::string const& output_topic,
-                                bool latching,
-                                std::string const& data_type,
-                                std::string const& md5_sum,
-                                std::string definition);
+  void SendAdvertisementInfo(std::string const& output_topic,
+                             bool latching,
+                             std::string const& data_type,
+                             std::string const& md5_sum,
+                             std::string definition);
 
-  void ProcessContent(std::string const& output_topic,
-                      std::string const& md5_sum,
-                      uint8_t const* data,
-                      const size_t data_size,
-                      const int seq_num);
+  void SendContent(std::string const& output_topic,
+                   std::string const& md5_sum,
+                   uint8_t const* data,
+                   size_t const data_size,
+                   int const seq_num);
+
+  void SendRequest(std::string const& output_topic);
 
  private:
   using AdvertisementInfoSupplier =
@@ -70,7 +73,12 @@ class GenericRapidPub {
   using ContentSupplierPtr = std::unique_ptr<ContentSupplier>;
   ContentSupplierPtr content_supplier_;
 
-  unsigned int advertisement_info_seq_;
+  using RequestSupplier =
+                kn::DdsTypedSupplier<rapid::ext::astrobee::GenericCommsRequest>;
+  using RequestSupplierPtr = std::unique_ptr<RequestSupplier>;
+  RequestSupplierPtr request_supplier_;
+
+  unsigned int advertisement_info_seq_, request_seq_;
 };
 
 typedef std::shared_ptr<ff::GenericRapidPub> GenericRapidPubPtr;

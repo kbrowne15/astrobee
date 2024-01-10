@@ -20,6 +20,7 @@
 #define COMMS_BRIDGE_GENERIC_RAPID_SUB_H_
 
 #include <comms_bridge/generic_rapid_msg_ros_pub.h>
+#include <comms_bridge/generic_ros_sub_rapid_pub.h>
 
 #include <memory>
 #include <string>
@@ -34,6 +35,7 @@
 
 #include "dds_msgs/GenericCommsAdvertisementInfoSupport.h"
 #include "dds_msgs/GenericCommsContentSupport.h"
+#include "dds_msgs/GenericCommsRequestSupport.h"
 
 namespace ff {
 
@@ -43,11 +45,13 @@ class GenericRapidSub {
   GenericRapidSub(const std::string& entity_name,
                   const std::string& subscribe_topic,
                   const std::string& subscriber_partition,
-                  GenericRapidMsgRosPub* rapid_msg_ros_pub)
+                  GenericRapidMsgRosPub* rapid_msg_ros_pub,
+                  GenericROSSubRapidPub* ros_sub_rapid_pub)
       : dds_event_loop_(entity_name),
         subscribe_topic_(subscribe_topic),
         subscriber_partition_(subscriber_partition),
-        ros_pub_(rapid_msg_ros_pub) {
+        ros_pub_(rapid_msg_ros_pub),
+        ros_sub_(ros_sub_rapid_pub) {
     // connect to ddsEventLoop
     try {
       dds_event_loop_.connect<T>(this,
@@ -74,11 +78,24 @@ class GenericRapidSub {
 
   void operator() (T const* data) {
     ROS_DEBUG("Received data for topic %s\n", subscribe_topic_.c_str());
-    ros_pub_->ConvertData(data);
+    DirectData(data);
+  }
+
+  void DirectData(rapid::ext::astrobee::GenericCommsAdvertisementInfo const* data) {
+    ros_pub_->HandleAdvertisementInfo(data);
+  }
+
+  void DirectData(rapid::ext::astrobee::GenericCommsContent const* data) {
+    ros_pub_->HandleContent(data, subscriber_partition_);
+  }
+
+  void DirectData(rapid::ext::astrobee::GenericCommsRequest const* data) {
+    ros_sub_->HandleRequest(data, subscriber_partition_);
   }
 
  private:
   GenericRapidMsgRosPub* ros_pub_;
+  GenericROSSubRapidPub* ros_sub_;
   std::string subscribe_topic_;
   std::string subscriber_partition_;
 
@@ -102,6 +119,8 @@ typedef std::shared_ptr<GenericRapidSub<rapid::ext::astrobee::GenericCommsAdvert
     AdvertisementInfoRapidSubPtr;
 typedef std::shared_ptr<GenericRapidSub<rapid::ext::astrobee::GenericCommsContent>>
     ContentRapidSubPtr;
+typedef std::shared_ptr<GenericRapidSub<rapid::ext::astrobee::GenericCommsRequest>>
+    RequestRapidSubPtr;
 
 }  // end namespace ff
 

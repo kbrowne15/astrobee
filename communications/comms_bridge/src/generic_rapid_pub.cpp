@@ -23,7 +23,7 @@
 namespace ff {
 
 GenericRapidPub::GenericRapidPub(std::string const& robot_name) :
-    advertisement_info_seq_(0) {
+    advertisement_info_seq_(0), request_seq_(0) {
   std::string dds_topic_name;
   dds_topic_name = robot_name + "-" +
                    rapid::ext::astrobee::GENERIC_COMMS_ADVERTISEMENT_INFO_TOPIC;
@@ -40,8 +40,16 @@ GenericRapidPub::GenericRapidPub(std::string const& robot_name) :
   content_supplier_.reset(new GenericRapidPub::ContentSupplier(
     dds_topic_name, "", "AstrobeeGenericCommsContentProfile", ""));
 
+  dds_topic_name = robot_name + "-" +
+                   rapid::ext::astrobee::GENERIC_COMMS_REQUEST_TOPIC;
+  ROS_ERROR("Comms Bridge: DDS Publisher DDS request topic name: %s\n",
+            dds_topic_name.c_str());
+  request_supplier_.reset(new GenericRapidPub::RequestSupplier(
+    dds_topic_name, "", "AstrobeeGenericCommsResetProfile", ""));
+
   rapid::RapidHelper::initHeader(advertisement_info_supplier_->event().hdr);
   rapid::RapidHelper::initHeader(content_supplier_->event().hdr);
+  rapid::RapidHelper::initHeader(request_supplier_->event().hdr);
 }
 
 GenericRapidPub::~GenericRapidPub() {}
@@ -63,11 +71,11 @@ void GenericRapidPub::CopyString(const int max_size,
   dest[size] = '\0';
 }
 
-void GenericRapidPub::ProcessAdvertisementInfo(std::string const& output_topic,
-                                               bool latching,
-                                               std::string const& data_type,
-                                               std::string const& md5_sum,
-                                               std::string definition) {
+void GenericRapidPub::SendAdvertisementInfo(std::string const& output_topic,
+                                            bool latching,
+                                            std::string const& data_type,
+                                            std::string const& md5_sum,
+                                            std::string definition) {
   rapid::ext::astrobee::GenericCommsAdvertisementInfo &msg =
                                           advertisement_info_supplier_->event();
 
@@ -119,11 +127,11 @@ void GenericRapidPub::ProcessAdvertisementInfo(std::string const& output_topic,
   advertisement_info_supplier_->sendEvent();
 }
 
-void GenericRapidPub::ProcessContent(std::string const& output_topic,
-                                     std::string const& md5_sum,
-                                     uint8_t const* data,
-                                     const size_t data_size,
-                                     const int seq_num) {
+void GenericRapidPub::SendContent(std::string const& output_topic,
+                                  std::string const& md5_sum,
+                                  uint8_t const* data,
+                                  size_t const data_size,
+                                  int const seq_num) {
   unsigned int size;
   rapid::ext::astrobee::GenericCommsContent &msg = content_supplier_->event();
 
@@ -148,7 +156,7 @@ void GenericRapidPub::ProcessContent(std::string const& output_topic,
   size = data_size;
   if (size > 131071) {
     ROS_ERROR("Comms Bridge: The message data for topic %s is greater than 131072 . Please change idl.",
-              output_topic);
+              output_topic.c_str());
     size = 131071;
   }
 
@@ -163,6 +171,23 @@ void GenericRapidPub::ProcessContent(std::string const& output_topic,
 
   // Send message
   content_supplier_->sendEvent();
+}
+
+void GenericRapidPub::SendRequest(std::string const& output_topic) {
+  rapid::ext::astrobee::GenericCommsRequest &msg = request_supplier_->event();
+
+  msg.hdr.timeStamp = comms_util::RosTime2RapidTime(ros::Time::now());
+  msg.hdr.serial = ++request_seq_;
+
+  // Currently the output topic can only be 128 characters long
+  CopyString<rapid::String128>(128,
+                               output_topic,
+                               msg.outputTopic,
+                               "Out topic",
+                               output_topic);
+
+  // Send message
+  request_supplier_->sendEvent();
 }
 
 }  // end namespace ff

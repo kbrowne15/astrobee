@@ -34,6 +34,8 @@
 #include <utility>
 #include <vector>
 
+#include "dds_msgs/GenericCommsRequestSupport.h"
+
 namespace ff {
 
 class GenericROSSubRapidPub : public BridgeSubscriber {
@@ -44,7 +46,7 @@ class GenericROSSubRapidPub : public BridgeSubscriber {
   void AddTopics(std::map<std::string,
        std::vector<std::pair<std::string, std::string>>> const& link_entries);
 
-  void InitializeDDS(std::vector<std::string> const& connections);
+  void InitializeDDS(std::map<std::string, GenericRapidPubPtr>* robot_pubs);
 
   // Called with the mutex held
   virtual void subscribeTopic(std::string const& in_topic,
@@ -57,11 +59,14 @@ class GenericROSSubRapidPub : public BridgeSubscriber {
   virtual void relayMessage(const RelayTopicInfo& topic_info,
                             ContentInfo const& content_info);
 
+  void HandleRequest(rapid::ext::astrobee::GenericCommsRequest const* data,
+                     std::string const& connecting_robot);
+
  private:
   bool dds_initialized_;
 
   std::map<std::string, std::vector<std::pair<std::string, std::string>>> topic_mapping_;
-  std::map<std::string, GenericRapidPubPtr> robot_connections_;
+  std::map<std::string, GenericRapidPubPtr>* robot_rapid_pubs_;
 };
 
 }  // end namespace ff
