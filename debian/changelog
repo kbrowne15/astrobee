@@ -1,3 +1,11 @@
+astrobee (0.19.2) testing; urgency=medium
+
+  * Localization updates
+  * Updated fault table
+  * System monitor fault reporting
+
+ -- Astrobee Flight Software <astrobee-fsw@nx.arc.nasa.gov>  Wed, 04 Jun 2025 11:00:24 -0700
+
 astrobee (0.19.1) testing; urgency=medium
 
   * Updated Map Matching with TEBLID and CLAHE
